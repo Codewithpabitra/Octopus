@@ -1,6 +1,7 @@
 import { exec } from "child_process";
 import { promisify } from "util";
 import os from "os";
+import { platform } from "os";
 
 const execAsync = promisify(exec);
 
@@ -11,10 +12,15 @@ const BLOCKED = [
   "rm -rf /*",
   "mkfs",
   "dd if=",
-  ":(){:|:&};:", // fork bomb
+  ":(){:|:&};:",
   "chmod -R 777 /",
   "chown -R",
   "> /dev/sda",
+  // Windows specific
+  "format c:",
+  "del /f /s /q c:\\",
+  "rd /s /q c:\\",
+  "rmdir /s /q c:\\",
 ];
 
 function isBanned(command: string): boolean {
@@ -29,8 +35,37 @@ function expandHome(command: string): string {
   return command.replace(/~/g, os.homedir());
 }
 
-// ── Execute
+// ── Normalize Unix commands to Windows equivalents
+function normalizeCommand(command: string): string {
+  if (platform() !== "win32") return command;
 
+  // Map common Unix commands to Windows equivalents
+  const map: Record<string, string> = {
+    "ls ~": "dir %USERPROFILE%",
+    ls: "dir",
+    clear: "cls",
+    cat: "type",
+    touch: "type nul >",
+    which: "where",
+    whoami: "whoami",
+    pwd: "cd",
+    cp: "copy",
+    mv: "move",
+    rm: "del",
+  };
+
+  let normalized = command;
+  for (const [unix, win] of Object.entries(map)) {
+    if (normalized.startsWith(unix)) {
+      normalized = normalized.replace(unix, win);
+      break;
+    }
+  }
+
+  return normalized;
+}
+
+// ── Execute
 export interface ShellResult {
   success: boolean;
   output: string;
@@ -48,9 +83,10 @@ export async function executeShell(command: string): Promise<ShellResult> {
   }
 
   const expanded = expandHome(command);
+  const normalized = normalizeCommand(expanded);
 
   try {
-    const { stdout, stderr } = await execAsync(expanded, {
+    const { stdout, stderr } = await execAsync(normalized, {
       timeout: 15000, // 15 second timeout
       maxBuffer: 1024 * 512, // 512kb max output
     });
