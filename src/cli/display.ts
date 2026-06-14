@@ -65,9 +65,21 @@ export function showBanner(): void {
   );
   console.log();
   console.log(
-    chalk.gray("  Type a task in plain English. Type ") +
-      chalk.white('"exit"') +
-      chalk.gray(" to quit."),
+    chalk.gray("  Type a task in plain English or use a command below:"),
+  );
+  console.log();
+  console.log(
+    chalk.gray("  ") +
+      chalk.cyan("help") +
+      chalk.gray("  —  show what Octopus can do"),
+  );
+  console.log(
+    chalk.gray("  ") +
+      chalk.cyan("clear memory") +
+      chalk.gray("  —  wipe conversation history"),
+  );
+  console.log(
+    chalk.gray("  ") + chalk.cyan("exit") + chalk.gray("  —  quit Octopus"),
   );
   console.log();
 }
