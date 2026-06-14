@@ -1,5 +1,13 @@
 import chalk from "chalk";
 import ora, { Ora } from "ora";
+import os from "os";
+
+const OS_LABEL =
+  os.platform() === "win32"
+    ? "windows"
+    : os.platform() === "darwin"
+      ? "macos"
+      : "linux";
 
 // ── Octopus ASCII banner
 
@@ -41,7 +49,10 @@ export function showBanner(): void {
   console.log(
     chalk.gray("  Model      ") +
       chalk.white("llama-3.3-70b-versatile") +
-      chalk.gray("  via Groq"),
+      chalk.gray("  via Groq") +
+      "\n" +
+      chalk.gray("  Platform   ") +
+      chalk.white(OS_LABEL),
   );
 
   console.log(chalk.gray("  Memory     ") + chalk.white("last 10 messages"));

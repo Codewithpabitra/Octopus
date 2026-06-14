@@ -1,9 +1,20 @@
 import Groq from "groq-sdk";
 import { config } from "../config/keys.js";
+import os from "os";
 
 const groq = new Groq({ apiKey: config.groq.apiKey });
 
+const IS_WINDOWS = os.platform() === "win32";
+
+const PLATFORM_NOTE = IS_WINDOWS
+  ? `You are running on Windows.
+For SHELL actions: use Windows cmd.exe syntax, use 'dir' instead of 'ls', use %USERPROFILE% for home in commands, use backslashes.
+For FILE actions: always use ~ for home directory paths (e.g. ~/test.txt not %USERPROFILE%\\test.txt). The file tentacle handles ~ expansion itself.
+Use 'dir' instead of 'ls', 'type' instead of 'cat', 'del' instead of 'rm'.`
+  : `You are running on macOS/Linux. Always generate Unix-native commands. Use ls, forward slashes, ~ for home directory.`;
+
 const SYSTEM_PROMPT = `You are Octopus, a terminal AI agent that executes real tasks on the user's computer and online services.
+${PLATFORM_NOTE}
 
 Parse the user's natural language command and return ONLY a valid JSON object. No explanation, no markdown, no extra text.
 

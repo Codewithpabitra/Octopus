@@ -1,5 +1,13 @@
 import dotenv from "dotenv";
 dotenv.config();
+import os from "os";
+
+export const platform = {
+  isWindows: os.platform() === "win32",
+  isMac: os.platform() === "darwin",
+  isLinux: os.platform() === "linux",
+  name: os.platform(),
+};
 
 function require_env(key: string): string {
   const value = process.env[key];

@@ -1,7 +1,6 @@
 import { exec } from "child_process";
 import { promisify } from "util";
-import os from "os";
-import { platform } from "os";
+import os, { platform } from "os";
 
 const execAsync = promisify(exec);
 
@@ -32,6 +31,11 @@ function isBanned(command: string): boolean {
 // ── Expand ~ to home directory
 
 function expandHome(command: string): string {
+  if (platform() === "win32") {
+    return command
+      .replace(/^~[/\\]/, os.homedir() + "\\")
+      .replace(/~/g, os.homedir());
+  }
   return command.replace(/~/g, os.homedir());
 }
 
@@ -39,30 +43,37 @@ function expandHome(command: string): string {
 function normalizeCommand(command: string): string {
   if (platform() !== "win32") return command;
 
-  // Map common Unix commands to Windows equivalents
-  const map: Record<string, string> = {
-    "ls ~": "dir %USERPROFILE%",
-    ls: "dir",
-    clear: "cls",
-    cat: "type",
-    touch: "type nul >",
-    which: "where",
-    whoami: "whoami",
-    pwd: "cd",
-    cp: "copy",
-    mv: "move",
-    rm: "del",
-  };
+  // Fix path separators first
+  command = command.replace(/~\//g, "%USERPROFILE%\\");
+  command = command.replace(/(?<!%)\//g, "\\");
 
-  let normalized = command;
-  for (const [unix, win] of Object.entries(map)) {
-    if (normalized.startsWith(unix)) {
-      normalized = normalized.replace(unix, win);
+  // Unix -> Windows command map using regex
+  const map: [RegExp, string][] = [
+    [/^ls\b/, "dir"],
+    [/^clear$/, "cls"],
+    [/^cat\b/, "type"],
+    [/^touch\b/, "type nul >"],
+    [/^which\b/, "where"],
+    [/^pwd$/, "cd"],
+    [/^cp\b/, "copy"],
+    [/^mv\b/, "move"],
+    [/^rm -rf\b/, "rd /s /q"],
+    [/^rm\b/, "del"],
+    [/^mkdir\b/, "mkdir"],
+    [/^grep\b/, "findstr"],
+    [/^echo\b/, "echo"],
+    [/^env$/, "set"],
+    [/^printenv\b/, "echo"],
+  ];
+
+  for (const [pattern, replacement] of map) {
+    if (pattern.test(command)) {
+      command = command.replace(pattern, replacement);
       break;
     }
   }
 
-  return normalized;
+  return command;
 }
 
 // ── Execute

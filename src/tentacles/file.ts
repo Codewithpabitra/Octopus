@@ -1,11 +1,21 @@
 import fs from "fs/promises";
 import path from "path";
-import os from "os";
+import os, { platform } from "os";
 
 // ── Expand ~ to home directory
 
 function expandHome(filePath: string): string {
-  return filePath.replace(/^~/, os.homedir());
+  const home = os.homedir();
+
+  if (platform() === "win32") {
+    return filePath
+      .replace(/^~[/\\]/, home + "\\")
+      .replace(/^~$/, home)
+      .replace(/%USERPROFILE%/gi, home)
+      .replace(/\//g, "\\");
+  }
+
+  return filePath.replace(/^~\//, home + "/").replace(/^~$/, home);
 }
 
 // ── Result type
