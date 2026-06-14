@@ -14,41 +14,50 @@ export function showBanner(): void {
  ██║   ██║██║        ██║   ██║   ██║██╔═══╝ ██║   ██║╚════██║
  ╚██████╔╝╚██████╗   ██║   ╚██████╔╝██║     ╚██████╔╝███████║
   ╚═════╝  ╚═════╝   ╚═╝    ╚═════╝ ╚═╝      ╚═════╝ ╚══════╝
-  `)
+  `),
   );
 
   console.log(
     chalk.cyan("  ") +
-    chalk.bold.white("🐙  Terminal AI Agent") +
-    chalk.gray("  —  speak naturally, execute instantly")
+      chalk.bold.white("🐙  Terminal AI Agent") +
+      chalk.gray("  —  speak naturally, execute instantly"),
   );
 
   console.log();
-  console.log(chalk.gray("  ─────────────────────────────────────────────────────────────"));
+  console.log(
+    chalk.gray(
+      "  ─────────────────────────────────────────────────────────────",
+    ),
+  );
   console.log();
 
   console.log(
     chalk.gray("  Tentacles  ") +
-    chalk.cyan("⬡ shell  ") +
-    chalk.cyan("⬡ email  ") +
-    chalk.cyan("⬡ file")
+      chalk.cyan("⬡ shell  ") +
+      chalk.cyan("⬡ email  ") +
+      chalk.cyan("⬡ file"),
   );
 
   console.log(
     chalk.gray("  Model      ") +
-    chalk.white("llama-3.3-70b-versatile") +
-    chalk.gray("  via Groq")
+      chalk.white("llama-3.3-70b-versatile") +
+      chalk.gray("  via Groq"),
   );
 
+  console.log(chalk.gray("  Memory     ") + chalk.white("last 10 messages"));
+
+  console.log();
   console.log(
-    chalk.gray("  Memory     ") +
-    chalk.white("last 10 messages")
+    chalk.gray(
+      "  ─────────────────────────────────────────────────────────────",
+    ),
   );
-
   console.log();
-  console.log(chalk.gray("  ─────────────────────────────────────────────────────────────"));
-  console.log();
-  console.log(chalk.gray('  Type a task in plain English. Type ') + chalk.white('"exit"') + chalk.gray(" to quit."));
+  console.log(
+    chalk.gray("  Type a task in plain English. Type ") +
+      chalk.white('"exit"') +
+      chalk.gray(" to quit."),
+  );
   console.log();
 }
 
@@ -83,15 +92,12 @@ export function showIntent(summary: string, action: string): void {
   const icons: Record<string, string> = {
     shell: "⚡",
     email: "✉️ ",
-    file:  "📁",
+    file: "📁",
     unknown: "❓",
   };
   const icon = icons[action] ?? "•";
   console.log();
-  console.log(
-    chalk.gray("  intent  ") +
-    chalk.white(`${icon}  ${summary}`)
-  );
+  console.log(chalk.gray("  intent  ") + chalk.white(`${icon}  ${summary}`));
 }
 
 // ── Confirm prompt
@@ -99,7 +105,7 @@ export function showIntent(summary: string, action: string): void {
 export function showConfirmPrompt(): void {
   process.stdout.write(
     chalk.yellow("  ⚠  This action requires confirmation. Proceed? ") +
-    chalk.white("[y/n] ")
+      chalk.white("[y/n] "),
   );
 }
 
@@ -120,7 +126,7 @@ export function showError(message: string): void {
 export function showOutput(output: string): void {
   console.log();
   const lines = output.trimEnd().split("\n");
-  lines.forEach(line => {
+  lines.forEach((line) => {
     console.log(chalk.gray("  │  ") + chalk.white(line));
   });
   console.log();
@@ -128,7 +134,9 @@ export function showOutput(output: string): void {
 
 export function showUnknown(reason: string): void {
   console.log();
-  console.log(chalk.yellow("  ◆  ") + chalk.gray("Octopus can't execute this as a task:"));
+  console.log(
+    chalk.yellow("  ◆  ") + chalk.gray("Octopus can't execute this as a task:"),
+  );
   console.log(chalk.gray("     ") + chalk.white(reason));
   console.log(chalk.gray("     Try rephrasing as a concrete action."));
   console.log();
