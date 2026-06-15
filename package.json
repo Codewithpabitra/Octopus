@@ -6,6 +6,7 @@
   "main": "dist/cli/index.js",
   "bin": {
     "octopus": "dist/cli/index.js",
+    "octopus-agent": "dist/cli/index.js",
     "octopus-setup": "dist/cli/setup.js"
   },
   "scripts": {
