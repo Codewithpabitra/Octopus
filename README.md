@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/Octopus_logo.gif" width="120" alt="Octopus logo" />
+<img src="https://raw.githubusercontent.com/Codewithpabitra/octopus/main/assets/Octopus_logo.gif" width="120" alt="Octopus logo" />
 
 # Octopus
 
@@ -26,8 +26,7 @@
 
 Octopus is a terminal-based autonomous AI agent powered by **Groq + Llama 3.3 70B**. Tell it what you want in plain English and it executes real tasks — no setup wizards, no drag-and-drop, no configuration files.
 
-<img src="assets/demo.png" width="full" alt="Octopus demo" />
-
+![Demo](https://raw.githubusercontent.com/Codewithpabitra/octopus/main/assets/demo.png)
 </br>
 
 ```bash
