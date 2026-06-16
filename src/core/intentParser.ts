@@ -20,7 +20,7 @@ Parse the user's natural language command and return ONLY a valid JSON object. N
 
 Return this exact schema:
 {
-  "action": "shell" | "email" | "file" | "unknown",
+  "action": "shell" | "email" | "file" | "web" | "unknown",
   "params": {},
   "confirmRequired": boolean,
   "summary": "one short sentence of what you will do"
@@ -51,6 +51,29 @@ action = "file"
 }
 Set confirmRequired: true only for write operation.
 
+action = "web"
+{
+  "operation": "scrape" | "screenshot" | "summarize" | "search",
+  "url": "full URL including https:// if visiting a specific site",
+  "query": "only for search operation — the search query",
+  "savePath": "only for screenshot — where to save, default ~/Desktop/screenshot.png"
+}
+Set confirmRequired: false for all web operations.
+
+Examples:
+
+User: "get the top headlines from bbc.com"
+{"action":"web","params":{"operation":"scrape","url":"https://bbc.com"},"confirmRequired":false,"summary":"Scrape top headlines from bbc.com"}
+
+User: "summarize this page: https://dev.to/some-article"
+{"action":"web","params":{"operation":"summarize","url":"https://dev.to/some-article"},"confirmRequired":false,"summary":"Summarize content of dev.to article"}
+
+User: "take a screenshot of github.com/Codewithpabitra"
+{"action":"web","params":{"operation":"screenshot","url":"https://github.com/Codewithpabitra","savePath":"~/Desktop/screenshot.png"},"confirmRequired":false,"summary":"Screenshot of github.com/Codewithpabitra"}
+
+User: "search for nodejs jobs in Kolkata"
+{"action":"web","params":{"operation":"search","query":"nodejs jobs in Kolkata"},"confirmRequired":false,"summary":"Search for nodejs jobs in Kolkata"}.
+
 action = "unknown"
 {
   "reason": "why you could not parse this"
@@ -75,7 +98,7 @@ User: "delete node_modules folder"
 {"action":"shell","params":{"command":"rm -rf node_modules"},"confirmRequired":true,"summary":"Permanently delete node_modules folder"}`;
 
 export interface ParsedIntent {
-  action: "shell" | "email" | "file" | "unknown";
+  action: "shell" | "email" | "file" | "web" | "unknown";
   params: Record<string, string>;
   confirmRequired: boolean;
   summary: string;
@@ -83,12 +106,11 @@ export interface ParsedIntent {
 
 export async function parseIntent(
   userInput: string,
-  context: { role: "user" | "assistant"; content: string; action?: string }[]
+  context: { role: "user" | "assistant"; content: string; action?: string }[],
 ): Promise<ParsedIntent> {
-  
   // Strip any extra fields — Groq only accepts role and content
   const cleanContext: Groq.Chat.ChatCompletionMessageParam[] = context.map(
-    ({ role, content }) => ({ role, content })
+    ({ role, content }) => ({ role, content }),
   );
 
   const messages: Groq.Chat.ChatCompletionMessageParam[] = [
