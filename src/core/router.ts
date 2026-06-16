@@ -1,18 +1,22 @@
 import { ParsedIntent } from "./intentParser.js";
 import { executeShell } from "../tentacles/shell.js";
 import { executeFile } from "../tentacles/file.js";
-import { executeEmail } from "../tentacles/email.js"; 
+import { executeEmail } from "../tentacles/email.js";
 
-
-// ── Unified result type 
+// ── Unified result type
 export interface ExecuteResult {
   success: boolean;
   output: string;
   message: string;
 }
 
-// ── Router 
-export async function execute(intent: ParsedIntent): Promise<ExecuteResult> {
+export type ProgressCallback = (text: string) => void;
+
+// ── Router
+export async function execute(
+  intent: ParsedIntent,
+  onProgress: ProgressCallback,
+): Promise<ExecuteResult> {
   switch (intent.action) {
     case "shell": {
       const command = intent.params["command"];
@@ -23,15 +27,22 @@ export async function execute(intent: ParsedIntent): Promise<ExecuteResult> {
           message: "No command found in parsed intent.",
         };
       }
+      onProgress("Running command...");
       return executeShell(command);
     }
 
     case "file": {
+      const operation = intent.params["operation"];
+      if (operation === "read") onProgress("Reading file...");
+      else if (operation === "write") onProgress("Writing file...");
+      else if (operation === "search") onProgress("Searching files...");
+      else if (operation === "list") onProgress("Listing directory...");
       return executeFile(intent.params);
     }
 
     case "email": {
-      return executeEmail(intent.params); 
+      onProgress("Sending email...");
+      return executeEmail(intent.params);
     }
 
     case "unknown":

@@ -13,8 +13,11 @@ import {
   showCancelled,
   showGoodbye,
   startSpinner,
+  updateSpinner,
   stopSpinner,
   showConfirmPrompt,
+  showWebResult,
+  showScreenshotSaved,
 } from "./display.js";
 import {
   addMessage,
@@ -139,6 +142,7 @@ async function main(): Promise<void> {
       }
 
       // Parse intent via Groq
+      // Parse intent via Groq
       startSpinner("Thinking...");
       let intent;
       try {
@@ -146,7 +150,6 @@ async function main(): Promise<void> {
         intent = await parseIntent(trimmed, recentMessages);
       } catch (err) {
         stopSpinner();
-        console.error(err);
         showError(
           "Failed to reach Groq API. Check your GROQ_API_KEY and internet connection.",
         );
@@ -177,12 +180,17 @@ async function main(): Promise<void> {
           ask();
           return;
         }
+        startSpinner("Starting...");
       }
 
-      // Route to tentacle (coming in Step 9)
+      // Route to tentacle
       try {
         const { execute } = await import("../core/router.js");
-        const result = await execute(intent);
+        // startSpinner("Starting...");
+        const result = await execute(intent, (text) => {
+          updateSpinner(text);
+        });
+        stopSpinner();
 
         if (result.success) {
           if (result.output) showOutput(result.output);
