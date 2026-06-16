@@ -34,6 +34,10 @@ Octopus is a terminal-based autonomous AI agent powered by **Groq + Llama 3.3 70
 🐙 ❯ list all files in my downloads folder
 🐙 ❯ write a file at ~/notes.txt with my project ideas
 🐙 ❯ search for files named report in my documents
+🐙 ❯ search for the latest AI News
+🐙 ❯ take a screenshot from {website_link}
+🐙 ❯ summarize the content {website_link}
+🐙 ❯ tell me the latest news about Elon Musk
 ```
 
 ---
@@ -45,6 +49,7 @@ Octopus is a terminal-based autonomous AI agent powered by **Groq + Llama 3.3 70
 | ⚡ **Shell** | run, show, check, get, list | "show my running processes", "what is my IP" |
 | 📁 **File** | read, write, create, search, list | "read ~/notes.txt", "search for invoice files" |
 | ✉️ **Email** | email, send, message | "email priya@gmail.com about the deadline" |
+| ✉️ **Web** | Search, Scrapping, Screenshot, Summarize | "Tell me about the latest AI News" |
 
 ---
 
@@ -145,9 +150,9 @@ Octopus remembers your last 10 messages **across sessions**. Context is stored l
 - [x] Email tentacle
 - [x] Cross-platform (Windows + Mac + Linux)
 - [x] Persistent SQLite memory
-- [ ] `npx octopus-agent` (npm publish)
+- [x] `npx octopus-agent` (npm publish)
+- [x] Web scraping tentacle (Playwright)
 - [ ] WhatsApp tentacle
-- [ ] Web scraping tentacle (Playwright)
 - [ ] Git tentacle
 - [ ] Google Calendar tentacle
 - [ ] Plugin API for community tentacles
