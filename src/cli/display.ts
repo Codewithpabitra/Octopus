@@ -44,7 +44,7 @@ export function showBanner(): void {
       chalk.cyan("⬡ shell  ") +
       chalk.cyan("⬡ email  ") +
       chalk.cyan("⬡ file"),
-      chalk.cyan("⬡ web")
+    chalk.cyan("⬡ web"),
   );
 
   console.log(
@@ -213,5 +213,163 @@ export function showScreenshotSaved(filePath: string): void {
       chalk.white("Screenshot saved → ") +
       chalk.cyan(filePath),
   );
+  console.log();
+}
+
+// Git specific display functions
+export function showGitStatus(output: string): void {
+  console.log();
+  console.log(chalk.cyan("  ── git status ──────────────────────────────"));
+  const lines = output.trimEnd().split("\n");
+  lines.forEach((line) => {
+    if (line.includes("modified")) {
+      console.log(chalk.yellow("  ▲  ") + chalk.white(line.trim()));
+    } else if (line.includes("new file") || line.includes("added")) {
+      console.log(chalk.green("  ✚  ") + chalk.white(line.trim()));
+    } else if (line.includes("deleted")) {
+      console.log(chalk.red("  ✖  ") + chalk.white(line.trim()));
+    } else if (line.includes("untracked")) {
+      console.log(chalk.gray("  ?  ") + chalk.white(line.trim()));
+    } else if (line.trim()) {
+      console.log(chalk.gray("  │  ") + chalk.white(line.trim()));
+    }
+  });
+  console.log();
+}
+
+export function showGitLog(
+  commits: { hash: string; date: string; message: string; author: string }[],
+): void {
+  console.log();
+  console.log(chalk.cyan("  ── git log ─────────────────────────────────"));
+  commits.forEach((c, i) => {
+    console.log(
+      chalk.gray(`  ${String(i + 1).padStart(2, "0")}  `) +
+        chalk.cyan(c.hash) +
+        chalk.gray("  ") +
+        chalk.white(c.message),
+    );
+    console.log(
+      chalk.gray("       ") +
+        chalk.gray(c.author) +
+        chalk.gray("  •  ") +
+        chalk.gray(c.date),
+    );
+    console.log();
+  });
+}
+
+export function showGitDiff(output: string): void {
+  console.log();
+  console.log(chalk.cyan("  ── git diff ────────────────────────────────"));
+  const lines = output.trimEnd().split("\n");
+  lines.slice(0, 60).forEach((line) => {
+    if (line.startsWith("+") && !line.startsWith("+++")) {
+      console.log(chalk.green("  " + line));
+    } else if (line.startsWith("-") && !line.startsWith("---")) {
+      console.log(chalk.red("  " + line));
+    } else if (line.startsWith("@@")) {
+      console.log(chalk.cyan("  " + line));
+    } else {
+      console.log(chalk.gray("  " + line));
+    }
+  });
+  if (output.split("\n").length > 60) {
+    console.log(chalk.gray("  ... (truncated for readability)"));
+  }
+  console.log();
+}
+
+export function showCommitMessage(message: string): void {
+  console.log();
+  console.log(chalk.cyan("  ── ai generated commit message ─────────────"));
+  console.log(chalk.white("  " + message));
+  console.log();
+}
+
+export function showGitBranches(branches: string[], current: string): void {
+  console.log();
+  console.log(chalk.cyan("  ── branches ─────────────────────────────────"));
+  branches.forEach((b) => {
+    const isCurrent = b.trim() === current.trim();
+    if (isCurrent) {
+      console.log(
+        chalk.green("  ✦  ") +
+          chalk.white(b.trim()) +
+          chalk.gray("  ← current"),
+      );
+    } else {
+      console.log(chalk.gray("  ○  ") + chalk.gray(b.trim()));
+    }
+  });
+  console.log();
+}
+
+export function showSafetyCheck(issues: string[]): void {
+  console.log();
+  if (issues.length === 0) {
+    console.log(chalk.green("  ✔  No issues found. Safe to push."));
+  } else {
+    console.log(chalk.yellow("  ⚠  Safety check found issues:"));
+    issues.forEach((issue) => {
+      console.log(chalk.red("     ✖  ") + chalk.white(issue));
+    });
+  }
+  console.log();
+}
+
+export function showStandup(output: string): void {
+  console.log();
+  console.log(chalk.cyan("  ── standup report ──────────────────────────"));
+  const lines = output.trimEnd().split("\n");
+  lines.forEach((line) => {
+    console.log(chalk.gray("  ") + chalk.white(line));
+  });
+  console.log();
+}
+
+export function showPRDescription(output: string): void {
+  console.log();
+  console.log(chalk.cyan("  ── PR description ──────────────────────────"));
+  const lines = output.trimEnd().split("\n");
+  lines.forEach((line) => {
+    console.log(chalk.gray("  ") + chalk.white(line));
+  });
+  console.log();
+}
+
+export function showStashes(
+  stashes: { index: number; message: string; summary: string }[],
+): void {
+  console.log();
+  console.log(chalk.cyan("  ── stashes ──────────────────────────────────"));
+  if (stashes.length === 0) {
+    console.log(chalk.gray("  No stashes found."));
+  } else {
+    stashes.forEach((s) => {
+      console.log(chalk.cyan(`  [${s.index}]  `) + chalk.white(s.message));
+      console.log(chalk.gray("       ") + chalk.gray(s.summary));
+      console.log();
+    });
+  }
+  console.log();
+}
+
+export function showStaleBranches(
+  branches: { name: string; lastCommit: string; daysAgo: number }[],
+): void {
+  console.log();
+  console.log(chalk.cyan("  ── stale branches ───────────────────────────"));
+  if (branches.length === 0) {
+    console.log(chalk.gray("  No stale branches found."));
+  } else {
+    branches.forEach((b) => {
+      console.log(
+        chalk.yellow("  ○  ") +
+          chalk.white(b.name) +
+          chalk.gray(`  •  last commit ${b.daysAgo} days ago`),
+      );
+    });
+  }
   console.log();
 }
