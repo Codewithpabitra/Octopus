@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/Codewithpabitra/octopus/main/assets/Octopus_logo.gif" width="120" alt="Octopus logo" />
+<img src="https://raw.githubusercontent.com/Codewithpabitra/Octopus/main/assets/Octopus_logo.gif" width="160" alt="Octopus logo" />
 
 # Octopus
 
@@ -26,30 +26,79 @@
 
 Octopus is a terminal-based autonomous AI agent powered by **Groq + Llama 3.3 70B**. Tell it what you want in plain English and it executes real tasks — no setup wizards, no drag-and-drop, no configuration files.
 
-![Demo](https://raw.githubusercontent.com/Codewithpabitra/octopus/main/assets/demo.png)
-</br>
-
 ```bash
-🐙 ❯ email john@acme.com that the meeting is moved to Friday
-🐙 ❯ list all files in my downloads folder
-🐙 ❯ write a file at ~/notes.txt with my project ideas
-🐙 ❯ search for files named report in my documents
-🐙 ❯ search for the latest AI News
-🐙 ❯ take a screenshot from {website_link}
-🐙 ❯ summarize the content {website_link}
-🐙 ❯ tell me the latest news about Elon Musk
+npx octopus-agent
 ```
 
 ---
 
 ## Tentacles (what it can do)
 
-| Tentacle | Trigger phrases | Examples |
-|---|---|---|
-| ⚡ **Shell** | run, show, check, get, list | "show my running processes", "what is my IP" |
-| 📁 **File** | read, write, create, search, list | "read ~/notes.txt", "search for invoice files" |
-| ✉️ **Email** | email, send, message | "email priya@gmail.com about the deadline" |
-| ✉️ **Web** | Search, Scrapping, Screenshot, Summarize | "Tell me about the latest AI News" |
+### ⚡ Shell
+Run any terminal command in plain English. Cross-platform Windows, Mac, Linux.
+```
+"show my running processes"
+"what is my IP address"
+"list files in downloads"
+```
+
+### 📁 File
+Read, write, search, and list files across your system.
+```
+"read ~/notes.txt"
+"write my ideas to ~/ideas.txt"
+"search for invoice files in documents"
+```
+
+### ✉️ Email
+Send emails via Gmail. Octopus writes the subject and body from your description.
+```
+"email john that the meeting is cancelled"
+"send priya the project update"
+```
+
+### 🌐 Web
+Scrape, screenshot, summarize pages and search the web via Google News RSS.
+```
+"search for latest AI news"
+"summarize https://dev.to/some-article"
+"take a screenshot of github.com/Codewithpabitra"
+"get the content from https://nodejs.org"
+```
+
+### 🐼 Git
+AI-powered git operations — from smart commits to repo intelligence.
+
+**Local operations:**
+```
+"show git status"
+"commit my changes with a good message"
+"show last 5 commits"
+"what changed in my files"
+"undo my last commit"
+"create a branch called feature/auth"
+"what's in my stashes"
+"show stale branches older than 30 days"
+```
+
+**Remote operations:**
+```
+"push my changes"
+"pull latest from remote"
+"am I ahead or behind remote"
+"how many branches in remote repo"
+"what is the remote origin"
+"fetch latest from remote"
+```
+
+**AI powered:**
+```
+"generate my standup"
+"write a PR description"
+"is it safe to push"
+"who has committed the most"
+"show repo stats"
+```
 
 ---
 
@@ -66,25 +115,24 @@ npm install -g octopus-agent
 octopus
 ```
 
-### Option 3 — install locally and run
-### 1. Clone and install locally and run
-
+### Option 3 — Clone and run locally
 ```bash
-git clone https://github.com/Codewithpabitra/octopus.git
-cd octopus
+git clone https://github.com/Codewithpabitra/Octopus.git
+cd Octopus
 npm install
+npm run dev
 ```
 
-### 2. Configure
+---
+
+## Configuration
 
 Run the setup wizard:
-
 ```bash
 npm run setup
 ```
 
 Or create `.env` manually:
-
 ```env
 GROQ_API_KEY=gsk_your_key_here
 GROQ_MODEL=llama-3.3-70b-versatile
@@ -95,12 +143,6 @@ GMAIL_APP_PASSWORD=xxxx xxxx xxxx xxxx
 > Get your free Groq API key at [console.groq.com](https://console.groq.com)
 >
 > Gmail App Password: [myaccount.google.com](https://myaccount.google.com) → Security → App passwords
-
-### 3. Run
-
-```bash
-npm run dev
-```
 
 ---
 
@@ -138,6 +180,8 @@ Octopus remembers your last 10 messages **across sessions**. Context is stored l
 | Language | TypeScript |
 | AI / LLM | Groq — Llama 3.3 70B |
 | Email | Nodemailer + Gmail OAuth |
+| Web | Playwright + Google News RSS |
+| Git | simple-git |
 | Memory | SQLite via better-sqlite3 |
 | CLI | Chalk + Ora |
 
@@ -148,13 +192,14 @@ Octopus remembers your last 10 messages **across sessions**. Context is stored l
 - [x] Shell tentacle
 - [x] File tentacle
 - [x] Email tentacle
-- [x] Cross-platform (Windows + Mac + Linux)
+- [x] Web tentacle (scrape, screenshot, summarize, search)
+- [x] Git tentacle (15+ operations with AI)
+- [x] Cross-platform Windows + Mac + Linux
 - [x] Persistent SQLite memory
-- [x] `npx octopus-agent` (npm publish)
-- [x] Web scraping tentacle (Playwright)
+- [x] Landing page
 - [ ] WhatsApp tentacle
-- [ ] Git tentacle
 - [ ] Google Calendar tentacle
+- [ ] Session login for web (LinkedIn, GitHub private)
 - [ ] Plugin API for community tentacles
 
 ---
@@ -164,7 +209,7 @@ Octopus remembers your last 10 messages **across sessions**. Context is stored l
 PRs are welcome. To add a new tentacle:
 
 1. Create `src/tentacles/yourname.ts`
-2. Export an `executeYourname(params)` function
+2. Export an `execute` function
 3. Add the action type to `src/core/intentParser.ts`
 4. Wire it in `src/core/router.ts`
 

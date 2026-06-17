@@ -358,18 +358,82 @@ async function safetyCheck(
     const issues: string[] = [];
 
     const secretPatterns = [
-      /api[_-]?key\s*=\s*['"][^'"]+['"]/i,
-      /secret\s*=\s*['"][^'"]+['"]/i,
-      /password\s*=\s*['"][^'"]+['"]/i,
-      /token\s*=\s*['"][^'"]+['"]/i,
-      /GROQ_API_KEY\s*=\s*[^$\n]+/,
-      /sk-[a-zA-Z0-9]{20,}/,
-      /gsk_[a-zA-Z0-9]{20,}/,
+      // ── Generic patterns 
+      /api[_-]?key\s*=\s*['"][^'"]{20,}['"]/i,
+      /api[_-]?secret\s*=\s*['"][^'"]{20,}['"]/i,
+      /secret[_-]?key\s*=\s*['"][^'"]{20,}['"]/i,
+      /access[_-]?token\s*=\s*['"][^'"]{20,}['"]/i,
+      /auth[_-]?token\s*=\s*['"][^'"]{20,}['"]/i,
+      /private[_-]?key\s*=\s*['"][^'"]{20,}['"]/i,
+      /client[_-]?secret\s*=\s*['"][^'"]{20,}['"]/i,
+      /password\s*=\s*['"][^'"]{8,}['"]/i,
+
+      // ── .env style (no quotes) 
+      /^[A-Z_]*(SECRET|TOKEN|KEY|PASSWORD|PRIVATE)[A-Z_]*\s*=\s*[^\s$"'#]{20,}/m,
+
+      // ── Specific service key formats 
+      /gsk_[a-zA-Z0-9]{30,}/,               // Groq
+      /sk-[a-zA-Z0-9]{30,}/,                // OpenAI
+      /sk-ant-[a-zA-Z0-9\-]{30,}/,          // Anthropic
+      /AIza[0-9A-Za-z\-_]{35}/,             // Google API key
+      /ya29\.[0-9A-Za-z\-_]{40,}/,          // Google OAuth — min length to avoid false positives
+      /ghp_[a-zA-Z0-9]{36}/,                // GitHub PAT
+      /github_pat_[a-zA-Z0-9_]{82}/,        // GitHub fine-grained PAT
+      /gho_[a-zA-Z0-9]{36}/,                // GitHub OAuth
+      /xox[baprs]-[0-9a-zA-Z\-]{20,}/,      // Slack tokens — stricter length
+      /AKIA[0-9A-Z]{16}/,                   // AWS Access Key — very specific format
+      /SG\.[a-zA-Z0-9\-_]{22}\.[a-zA-Z0-9\-_]{43}/, // SendGrid — exact format
+      /key-[a-zA-Z0-9]{32}/,                // Mailgun
+      /AC[a-zA-Z0-9]{32}/,                  // Twilio SID
+      /rk_live_[a-zA-Z0-9]{24}/,            // Stripe live
+      /sk_live_[a-zA-Z0-9]{24}/,            // Stripe secret
+      /mongodb\+srv:\/\/[^:]+:[^@]{8,}@/i,  // MongoDB with real password (min 8 chars)
+      /postgresql:\/\/[^:]+:[^@]{8,}@/i,    // Postgres with real password
+      /mysql:\/\/[^:]+:[^@]{8,}@/i,         // MySQL with real password
+      /redis:\/\/:[^@]{8,}@/i,              // Redis with real password
+      /-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----/, // Private key files only
     ];
 
-    secretPatterns.forEach((pattern) => {
+    secretPatterns.forEach((pattern, i) => {
       if (pattern.test(diff)) {
-        issues.push("Possible secret or API key detected in diff");
+        const labels: Record<number, string> = {
+          0: "API key detected in diff",
+          1: "API secret detected in diff",
+          2: "Secret key detected in diff",
+          3: "Access token detected in diff",
+          4: "Auth token detected in diff",
+          5: "Private key value detected in diff",
+          6: "Client secret detected in diff",
+          7: "Password detected in diff",
+          8: "Env variable with secret value detected",
+          9: "Groq API key detected",
+          10: "OpenAI API key detected",
+          11: "Anthropic API key detected",
+          12: "Google API key detected",
+          13: "Google OAuth token detected",
+          14: "GitHub personal access token detected",
+          15: "GitHub fine-grained PAT detected",
+          16: "GitHub OAuth token detected",
+          17: "Slack token detected",
+          18: "Slack webhook token detected",
+          19: "AWS Access Key detected",
+          20: "AWS Secret Key detected",
+          21: "SendGrid API key detected",
+          22: "Mailgun API key detected",
+          23: "Twilio Account SID detected",
+          24: "Twilio Auth Token detected",
+          25: "Stripe live key detected",
+          26: "Stripe secret key detected",
+          27: "Stripe public key detected",
+          28: "MongoDB connection string with credentials detected",
+          29: "PostgreSQL connection string with credentials detected",
+          30: "MySQL connection string with credentials detected",
+          31: "Redis connection string with password detected",
+          32: "Private key file detected — never commit private keys",
+          33: "Certificate file detected",
+        };
+        const msg = labels[i] ?? "Possible secret detected in diff";
+        if (!issues.includes(msg)) issues.push(msg);
       }
     });
 
