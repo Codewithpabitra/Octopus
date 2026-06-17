@@ -30,8 +30,7 @@ Octopus is a terminal-based autonomous AI agent powered by **Groq + Llama 3.3 70
 npx octopus-agent
 ```
 
-<img src="https://raw.githubusercontent.com/Codewithpabitra/Octopus/main/assets/demo.png" width="160" alt="Demo image" />
-
+![Octopus Demo](https://raw.githubusercontent.com/Codewithpabitra/Octopus/main/assets/demo.png)
 ---
 
 ## Tentacles (what it can do)
