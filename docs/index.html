@@ -619,6 +619,26 @@
           align-items: flex-start;
         }
       }
+
+      .tentacles-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1px;
+        background: var(--border);
+        border: 1px solid var(--border);
+      }
+
+      @media (max-width: 768px) {
+        .tentacles-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 480px) {
+        .tentacles-grid {
+          grid-template-columns: 1fr;
+        }
+      }
     </style>
   </head>
   <body>
@@ -700,7 +720,7 @@
     <section id="tentacles">
       <div class="container">
         <p class="section-label">capabilities</p>
-        <h2 class="section-title">Four tentacles.<br />Infinite tasks.</h2>
+        <h2 class="section-title">Five tentacles.<br />Infinite tasks.</h2>
         <p class="section-desc">
           Each tentacle handles a category of real-world actions. Tell Octopus
           what you want — it routes to the right one automatically.
@@ -760,6 +780,21 @@
               <div class="example">search for latest AI news</div>
               <div class="example">summarize https://dev.to/post</div>
               <div class="example">screenshot github.com/profile</div>
+            </div>
+          </div>
+
+          <div class="tentacle-card">
+            <div class="tentacle-icon">⎇</div>
+            <div class="tentacle-name">git</div>
+            <p class="tentacle-desc">
+              AI-powered git operations — smart commits, PR descriptions, standup generator, safety checks and more.
+            </p>
+            <div class="tentacle-examples">
+              <div class="example">commit my changes with a good message</div>
+              <div class="example">generate my standup</div>
+              <div class="example">write a PR description</div>
+              <div class="example">is it safe to push</div>
+              <div class="example">am I ahead or behind remote</div>
             </div>
           </div>
         </div>
@@ -823,6 +858,13 @@
             <p class="why-desc">
               Add new tentacles in one file. The plugin architecture is simple
               by design — no framework needed.
+            </p>
+          </div>
+          <div class="why-card">
+            <div class="why-num">07</div>
+            <div class="why-title">AI git operations</div>
+            <p class="why-desc">
+              Writes commit messages from your diff, generates standups, checks for leaked secrets before push, and explains what changed in plain English.
             </p>
           </div>
         </div>
@@ -947,7 +989,7 @@
         </li>
         <li><a href="https://console.groq.com" target="_blank">groq</a></li>
       </ul>
-      <span class="footer-copy">built by pabitra · mit license</span>
+      <span class="footer-copy">built by Codewithpabitra · MIT license</span>
     </footer>
 
     <script>
@@ -1009,6 +1051,31 @@
             "  │  • Runs on Chrome's V8 engine outside the browser",
             "  │  • Supports servers, CLI tools, and web applications",
             "  ✔  Summarized: https://nodejs.org",
+          ],
+        },
+        {
+          prompt: "commit my changes with a good message",
+          lines: [
+            "  intent  ⎇   AI commit message and commit all changes",
+            "  ⚠  This action requires confirmation. Proceed? [y/n] y",
+            "  ⎇  Reading your changes...",
+            "  ⎇  AI is writing your commit message...",
+            "  ── ai generated commit message ──────────",
+            "  feat(auth): add JWT refresh token rotation",
+            "  ✔  Committed: feat(auth): add JWT refresh token rotation",
+          ],
+        },
+        {
+          prompt: "generate my standup",
+          lines: [
+            "  intent  ⎇   Generate standup from recent commits",
+            "  ⎇  Reading yesterday's commits...",
+            "  ── standup report ───────────────────────",
+            "  ✅ What I did:",
+            "  • Added git tentacle with 15+ operations",
+            "  • Fixed safety check false positives",
+            "  🔄 What I'm doing today:",
+            "  • Publishing v1.2.0 to npm",
           ],
         },
       ];
