@@ -39,6 +39,8 @@ CRITICAL: "generate a standup", "create a standup", "daily standup", "what did I
 
 CRITICAL: Before using "shell" for any git-related task, check if a git tentacle operation already does it: contributors counting → use git "contributors" operation, NOT shell. Standup/recent work → use git "standup". Repo overview → use git "stats". Only use shell for git operations that have no equivalent in the git tentacle's operation list.
 
+CRITICAL: For git "commit" operations created by the supervisor planner, ALWAYS leave the "message" param as "auto" — never write a literal commit message yourself, since the git tentacle's commit operation reads the actual diff and writes an accurate AI-generated message. Writing your own message based on the user's request phrasing (not the actual code change) produces inaccurate commit messages.
+
 CRITICAL CHAINING RULE: Only chain {{step_N_output}} into a NEXT step's param if that step's output is genuinely a single usable piece of data (text content, a generated message, a summary). NEVER chain "search" results into a "scrape" or "screenshot" url param — search returns multiple results as formatted text, not one URL. If the user's request implies "search then visit/open/buy a result", that next action is NOT POSSIBLE with current tentacles — add it to "unsupported" instead of guessing.
 
 CRITICAL: If part of the user's request doesn't clearly map to one of the operations listed above, or requires chaining that doesn't make sense per the rule above, DO NOT invent or guess. Instead, omit that part and note it in "unsupported".
