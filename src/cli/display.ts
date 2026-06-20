@@ -50,9 +50,10 @@ export function showBanner(): void {
     chalk.gray("  Tentacles  ") +
       chalk.cyan("⬡ shell  ") +
       chalk.cyan("⬡ email  ") +
-      chalk.cyan("⬡ file"),
-    chalk.cyan("⬡ web"),
-    chalk.cyan("⬡ git"),
+      chalk.cyan("⬡ file  ") +
+      chalk.cyan("⬡ web  ") +
+      chalk.cyan("⬡ git  ") +
+      chalk.cyan("⬡ supervisor"),
   );
 
   console.log(
@@ -65,6 +66,11 @@ export function showBanner(): void {
   );
 
   console.log(chalk.gray("  Memory     ") + chalk.white("last 10 messages"));
+
+  console.log(
+    chalk.gray("  Supervisor ") +
+      chalk.white("auto-detects multi-step tasks")
+  );
 
   console.log();
   console.log(

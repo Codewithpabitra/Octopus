@@ -303,6 +303,47 @@ async function main(): Promise<void> {
         console.log(chalk.gray('             "who has committed the most"'));
         console.log(chalk.gray('             "show repo stats"'));
         console.log();
+
+        console.log(
+          chalk.white("  🛠️  Supervisor ") +
+            chalk.gray("Multi-step tasks across tentacles"),
+        );
+        console.log(
+          chalk.gray(
+            "             automatically detected — no special syntax needed",
+          ),
+        );
+        console.log();
+        console.log(
+          chalk.gray(
+            '             "check if safe to push, run tests, then push"',
+          ),
+        );
+        console.log(
+          chalk.gray(
+            '             "generate my standup and email it to my manager"',
+          ),
+        );
+        console.log(
+          chalk.gray(
+            '             "scrape this page, summarize it, save to a file"',
+          ),
+        );
+        console.log(
+          chalk.gray('             "check repo stats and email them to me"'),
+        );
+        console.log(
+          chalk.gray(
+            '             "run a full security check before I deploy"',
+          ),
+        );
+        console.log();
+        console.log(
+          chalk.gray(
+            "             if something's missing, Octopus will ask before running anything",
+          ),
+        );
+        console.log();
         ask();
         return;
       }

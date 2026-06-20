@@ -6,7 +6,7 @@
 
 **Terminal AI Agent — speak naturally, execute instantly.**
 
-*No GUI. No workflow builder. Just your terminal and plain English.*
+_No GUI. No workflow builder. Just your terminal and plain English._
 
 ---
 
@@ -23,7 +23,6 @@
 ---
 
 ## What is Octopus?
-thi is very cool
 
 Octopus is a terminal-based autonomous AI agent powered by **Groq + Llama 3.3 70B**. Tell it what you want in plain English and it executes real tasks — no setup wizards, no drag-and-drop, no configuration files.
 
@@ -31,13 +30,14 @@ Octopus is a terminal-based autonomous AI agent powered by **Groq + Llama 3.3 70
 npx octopus-agent
 ```
 
-![Octopus Demo](https://raw.githubusercontent.com/Codewithpabitra/Octopus/main/assets/demo.png)
----
+## ![Octopus Demo](https://raw.githubusercontent.com/Codewithpabitra/Octopus/main/assets/demo.png)
 
 ## Tentacles (what it can do)
 
 ### ⚡ Shell
+
 Run any terminal command in plain English. Cross-platform Windows, Mac, Linux.
+
 ```
 "show my running processes"
 "what is my IP address"
@@ -45,7 +45,9 @@ Run any terminal command in plain English. Cross-platform Windows, Mac, Linux.
 ```
 
 ### 📁 File
+
 Read, write, search, and list files across your system.
+
 ```
 "read ~/notes.txt"
 "write my ideas to ~/ideas.txt"
@@ -53,14 +55,18 @@ Read, write, search, and list files across your system.
 ```
 
 ### ✉️ Email
+
 Send emails via Gmail. Octopus writes the subject and body from your description.
+
 ```
 "email john that the meeting is cancelled"
 "send priya the project update"
 ```
 
 ### 🌐 Web
+
 Scrape, screenshot, summarize pages and search the web via Google News RSS.
+
 ```
 "search for latest AI news"
 "summarize https://dev.to/some-article"
@@ -69,9 +75,11 @@ Scrape, screenshot, summarize pages and search the web via Google News RSS.
 ```
 
 ### 🐼 Git
+
 AI-powered git operations — from smart commits to repo intelligence.
 
 **Local operations:**
+
 ```
 "show git status"
 "commit my changes with a good message"
@@ -84,6 +92,7 @@ AI-powered git operations — from smart commits to repo intelligence.
 ```
 
 **Remote operations:**
+
 ```
 "push my changes"
 "pull latest from remote"
@@ -94,6 +103,7 @@ AI-powered git operations — from smart commits to repo intelligence.
 ```
 
 **AI powered:**
+
 ```
 "generate my standup"
 "write a PR description"
@@ -102,22 +112,38 @@ AI-powered git operations — from smart commits to repo intelligence.
 "show repo stats"
 ```
 
+### ⎇ Supervisor
+
+Multi-step tasks across tentacles, automatically detected — no special syntax needed.
+
+```
+"check if safe to push, run tests, then push"
+"generate my standup and email it to my manager"
+"scrape a page, summarize it, save to a file"
+"run a full security check before I deploy"
+```
+
+Octopus plans the steps, asks for anything missing before running, executes in order, and stops cleanly if a step fails.
+
 ---
 
 ## Quick start
 
 ### Option 1 — Run instantly (no install)
+
 ```bash
 npx octopus-agent
 ```
 
 ### Option 2 — Install globally
+
 ```bash
 npm install -g octopus-agent
 octopus
 ```
 
 ### Option 3 — Clone and run locally
+
 ```bash
 git clone https://github.com/Codewithpabitra/Octopus.git
 cd Octopus
@@ -130,11 +156,13 @@ npm run dev
 ## Configuration
 
 Run the setup wizard:
+
 ```bash
 npm run setup
 ```
 
 Or create `.env` manually:
+
 ```env
 GROQ_API_KEY=gsk_your_key_here
 GROQ_MODEL=llama-3.3-70b-versatile
@@ -150,11 +178,11 @@ GMAIL_APP_PASSWORD=xxxx xxxx xxxx xxxx
 
 ## Commands
 
-| Command | What it does |
-|---|---|
-| `help` | Show all tentacles and examples |
-| `clear memory` | Wipe conversation history |
-| `exit` | Quit Octopus |
+| Command        | What it does                    |
+| -------------- | ------------------------------- |
+| `help`         | Show all tentacles and examples |
+| `clear memory` | Wipe conversation history       |
+| `exit`         | Quit Octopus                    |
 
 ---
 
@@ -166,26 +194,27 @@ Octopus remembers your last 10 messages **across sessions**. Context is stored l
 
 ## Platform support
 
-| Platform | Status |
-|---|---|
-| Windows | ✅ Supported |
-| macOS | ✅ Supported |
-| Linux | ✅ Supported |
+| Platform | Status       |
+| -------- | ------------ |
+| Windows  | ✅ Supported |
+| macOS    | ✅ Supported |
+| Linux    | ✅ Supported |
 
 ---
 
 ## Tech stack
 
-| Layer | Technology |
-|---|---|
-| Runtime | Node.js 18+ |
-| Language | TypeScript |
-| AI / LLM | Groq — Llama 3.3 70B |
-| Email | Nodemailer + Gmail OAuth |
-| Web | Playwright + Google News RSS |
-| Git | simple-git |
-| Memory | SQLite via better-sqlite3 |
-| CLI | Chalk + Ora |
+| Layer    | Technology                   |
+| -------- | ---------------------------- |
+| Runtime  | Node.js 18+                  |
+| Language | TypeScript                   |
+| AI / LLM | Groq — Llama 3.3 70B         |
+| Email    | Nodemailer + Gmail OAuth     |
+| Web      | Playwright + Google News RSS |
+| Git      | simple-git                   |
+| Supervisor      | Multi-agent Supervisor Architecture                 |
+| Memory   | SQLite via better-sqlite3    |
+| CLI      | Chalk + Ora                  |
 
 ---
 
@@ -199,6 +228,7 @@ Octopus remembers your last 10 messages **across sessions**. Context is stored l
 - [x] Cross-platform Windows + Mac + Linux
 - [x] Persistent SQLite memory
 - [x] Landing page
+- [x] Supervisor mode (multi-step, multi-tentacle task orchestration)
 - [ ] WhatsApp tentacle
 - [ ] Google Calendar tentacle
 - [ ] Session login for web (LinkedIn, GitHub private)
